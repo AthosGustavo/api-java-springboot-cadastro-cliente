@@ -18,17 +18,27 @@ public class ClienteController {
         clienteRepository.save(cliente);
     }
 
-//    @GetMapping
-//    public List<Cliente> getCliente(){
-//        List<Cliente> modelCliente = new ArrayList<>();
-//        List<getClienteDTO> clienteDTO = new ArrayList<>();
-//        for(Cliente dado : modelCliente){
-//            clienteDTO.add(new getClienteDTO());
-//
-//        }
-//
-//
-//
-//        return null;
-//    }
+    @GetMapping
+    public List<GetClienteDTO> getCliente(){
+        //clienteRepository.findAll(); devolve todos os objetos cliente que são armazenados na lista
+        List<Cliente> cliente = clienteRepository.findAll();
+        List<GetClienteDTO> getClienteDTO = new ArrayList<>();
+
+        for(Cliente x : cliente){
+            getClienteDTO.add(new GetClienteDTO(x));
+        }
+        return getClienteDTO;
+    }
+
+    @PutMapping
+    public void atualizaCliente(@RequestBody AtualizaClienteDTO atualizaClienteDTO){
+        Cliente cliente = clienteRepository.getReferenceById(atualizaClienteDTO.idCliente());
+        cliente.atualizaCliente(atualizaClienteDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public void excluir(@PathVariable Long id){
+        clienteRepository.deleteById(id);
+    }
+
 }
